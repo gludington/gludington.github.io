@@ -1,7 +1,9 @@
 var MySTTPlugin = (function(config) {
+		console.log("Registering MySTTPlugin");
+        config = config || {};
         var plugin = {
             button: config.mic,
-            stopDelay: chat._sttDelay,
+            stopDelay: config._sttDelay,
             recognition: undefined,
             registerChatPlugin: function (chat) {
                 var me = this;
