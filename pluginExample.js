@@ -1,5 +1,4 @@
 var MySTTPlugin = (function(config) {
-		console.log("Registering MySTTPlugin");
         config = config || {};
         var plugin = {
             button: config.mic,
@@ -7,7 +6,7 @@ var MySTTPlugin = (function(config) {
             recognition: undefined,
             registerChatPlugin: function (chat) {
                 var me = this;
-
+				console.log("Registering MySTTPlugin");
                 chat.addEventListener('conversationStart', undefined, function () {
                     if (me.recognition === undefined) {
                         window.setTimeout(function () {
@@ -140,9 +139,44 @@ var MySTTPlugin = (function(config) {
         return plugin;
 });
 
-//a wrapper method interal to UI would prevent each plugin from having to do this, which is still not defensive enough, or spread notation
-if (window.ameliaSdkPlugins) {
-    window.ameliaSdkPlugins.push(new MySTTPlugin());
-} else {
-    window.ameliaSdkPlugins = [ new MySTTPlugin() ];
-}
+// this would be the proposed syntactic sugar...the plugin author would only ever call
+// uiPlugins.addPlugin(plugin)
+var CustomUiPlugins = (function() {
+ 
+    var _plugins = function() {
+        this.plugins = [];  // Instance public properties
+        this.sdk = undefined;
+    };
+ 
+    _plugins.prototype = { // Instance public methods
+        'addPlugin' : function(plugin) {
+               this.plugins.push(plugin);
+               // if customUi uses uiPlugins.getPlugins() instead of accessing the window
+               // object directly, this if/then branch can be removed
+               // Not as written
+               // this is also not defensive enough, if the window object has been set
+               // but not as an array
+				if (window.ameliaSdkPlugins) {
+				    window.ameliaSdkPlugins.push(plugin);
+				} else {
+				    window.ameliaSdkPlugins = [ plugin ];
+				}
+               // if we already have an SDK on this object, register it immediately
+               if (this.sdk !== undefined) {
+					this.sdk.registerChatPlugin(plugin);
+               }
+               //since customUI does not have support for this sugar now, also set the
+               // window object
+        },
+        'getPlugins' : function() { return this.plugins }
+    };
+ 
+    return  { // Singleton public properties
+        'create' : function() { return new _plugins(); }
+    };
+})();
+
+var uiPlugins = CustomUiPlugins.create();
+
+//Normally, this one line would be all the plugin page would have to have
+uiPlugins.addPlugin(new MySTTPlugin());
