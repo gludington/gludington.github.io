@@ -6,7 +6,6 @@
 
 function init() {
 	// establish our plugin
-	console.log($);
 	$( "#myForm" ).submit(function( event ) {
 
 	var gatewayUrl = $("#myForm input[name=gatewayUrl]").val();
@@ -18,7 +17,7 @@ function init() {
 		username: username,
 		password: password
 	}
-	console.error(data);
+	
 	$.ajax({
 		type: "POST",
 		url: gatewayUrl + "/api/v1/auth/login",
@@ -33,7 +32,6 @@ function init() {
 	event.preventDefault();
 	return false;
 });
-	console.error($("#myForm").html());
 }
 
 </script>
