@@ -2,17 +2,56 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+
+
 function init() {
 	// establish our plugin
 	console.log($);
+	$( "#myForm" ).submit(function( event ) {
+
+	var gatewayUrl = $("#myForm input[name=gatewayUrl]").val();
+    var ameliaUrl = $("#myForm input[name=ameliaUrl]").val();
+	var username = $("#myForm input[name=username]").val();
+	var password = $("#myForm input[name=password]").val();
+	var data = {
+		ameliaUrl: ameliaUrl,
+		username: username,
+		password: password
+	}
+	console.error(data);
+	$.ajax({
+		type: "POST",
+		url: gatewayUrl + "/api/v1/auth/login",
+		headers: {
+			'Content-type': 'application/json'
+		},
+		data: data,
+		success: function( response ) {
+			$( "#result" ).html( response );
+		}
+	});
+	event.preventDefault();
+	return false;
+});
+	console.error($("#myForm").html());
 }
 
 </script>
 </head>
 <body onload="init()">
-<h2>For Demonstration purposes ONLY</h2>
-<p>Just hitting a rest gateway api</p>
-<a onclick="init();return false">Hit it and watch console</a>
+<h2>Hitting REST gateway for demonstration purposes ONLY</h2>
+<p>If this is loaded from a domain other than the gateway url domain, you will see in the browser console that the request is blocked.</p>
+<form id="myForm" action="ajaxtest.html">
+<ol>
+<li>Gateway url base with /AmeliaRest: <input name="gatewayUrl" value="https://ipsoft-amelia-uiux-v3.ipsoft.com/AmeliaRest"/></li>
+<li>Amelia url with /Amelia: <input name="ameliaUrl" value="https://ipsoft-amelia-marketplace-v3.ipsoft.com/Amelia"/></li>
+<li>Username: <input name="username"/></li>
+<li>Password: <input name="password" type="password"></li>
+</ol>
+<input type="submit" value="GO"/>
+
+Result:
+<div id="result"></div>
 </body>
 
 </html>
