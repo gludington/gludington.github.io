@@ -9,11 +9,11 @@
             var foo = 'bar';
 
             this.gatewayUrlBase = undefined;
-                this.ameliaUrl = undefined;
-                this.sessionToken = undefined;
-                this.conversationToken =  undefined;
+            this.ameliaUrl = undefined;
+            this.sessionToken = undefined;
+            this.conversationToken =  undefined;
 
-                this.login = (options) => {
+            this.login = (options) => {
                 if (options.gatewayUrl.endsWith('/')) {
                     options.gatewayUrl = options.gatewayUrl.substring(0, options.gatewayUrl.length -1);
                 }
@@ -22,14 +22,17 @@
                 console.error(options);
                 var me = this;
                 $.ajax({
-                   url: me.gatewayUrlBase + '/api/v1/auth/login',
-                    method: 'POST',
-                    data: {
-                       ameliaUrl: options.ameliaUrl,
-                        username: options.username,
-                        password: options.password
-                    }
-               })
+                           url: me.gatewayUrlBase + '/api/v1/auth/login',
+                           method: 'POST',
+                           headers: {
+                               'Content-Type': 'application/json'
+                           },
+                           data: {
+                               ameliaUrl: options.ameliaUrl,
+                               username: options.username,
+                               password: options.password
+                           }
+                       })
             };
         }
         const restSample = new RestSample();
