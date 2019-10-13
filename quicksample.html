@@ -1,0 +1,199 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+
+        function RestSample(config){
+
+            // private variables and functions
+            var foo = 'bar';
+
+            this.gatewayUrlBase = undefined;
+                this.ameliaUrl = undefined;
+                this.sessionToken = undefined;
+                this.conversationToken =  undefined;
+
+                this.login = (options) => {
+                if (options.gatewayUrl.endsWith('/')) {
+                    options.gatewayUrl = options.gatewayUrl.substring(0, options.gatewayUrl.length -1);
+                }
+                this.gatewayUrlBase = options.gatewayUrl;
+                this.ameliaUrl = options.ameliaUrl;
+                console.error(options);
+                var me = this;
+                $.ajax({
+                   url: me.gatewayUrlBase + '/api/v1/auth/login',
+                    method: 'POST',
+                    data: {
+                       ameliaUrl: options.ameliaUrl,
+                        username: options.username,
+                        password: options.password
+                    }
+               })
+            };
+        }
+        const restSample = new RestSample();
+        console.error(restSample);
+        const parseIt = function() {
+            var polledMessages = JSON.parse(document.getElementById('polledMessages').value);
+            document.getElementById('polledNumber').innerHTML=polledMessages.length + (polledMessages.length === 1 ? ' message' : ' messages');
+            var filtered = polledMessages.filter(message => message.messageType === 'TextMessageFromAmelia');
+            document.getElementById('lambdaFiltered').value=JSON.stringify(filtered);
+            document.getElementById('filteredNumber').innerHTML=filtered.length + (filtered.length === 1 ? ' message' : ' messages');
+        }
+    </script>
+</head>
+<body>
+<h1>A very quick rest example - not production ready but to illustrate /poll and /send</h1>
+
+<div id="loginSection">
+    <form id="loginForm" onsubmit="restSample.login({gatewayUrl: this.gatewayUrl.value, ameliaUrl: this.ameliaUrl.value, username: this.username.value, password: this.password.value});return false">
+        <label for="gatewayUrl">Rest Url Base, including /AmeliaRest</label>
+        <input name="gatewayUrl"><br/>
+        <label for="ameliaUrl">Amelia Url, including /Amelia</label>
+        <input name="ameliaUrl"/><br/>
+        <label for="username">Username</label>
+        <input name="username"/><br/>
+        <label for="password">Password</label>
+        <input name="password" type="password"/>
+        <br/>
+        <input type="submit" value="Login"/>
+    </form>
+</div>
+<div id="newConversationSection">
+    <form id="newConversationForm">
+        <label for="domain">Domain</label>
+        <input name="domain"/>
+    </form>
+</div>
+</div><table valign="top">
+    <tr>
+        <th>Source json messages</th>
+        <th>Filter function</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+<textarea id = "polledMessages" name="polledMessages" cols="40" rows="20">[
+  {
+    "messageId": "5212201b-7323-4f0a-91f2-a2cfde40cb67",
+    "contextId": "a706404d-689a-458c-84da-150fd88a9e17",
+    "headers": {
+      "X-Amelia-Conversation-Id": "LNXXWSBCAAAAA-1",
+      "X-Amelia-Self-Echo": "false",
+      "X-Amelia-Clock-Skew": "398",
+      "X-Amelia-Session-Sequence": "1",
+      "X-Amelia-Session-Id": "e5f8cbf9-b4f8-47cc-9693-e140bc89feb9",
+      "X-Amelia-Input-Enabled": "false",
+      "X-Amelia-Debug-Message": "false",
+      "X-Amelia-Message-Id": "5212201b-7323-4f0a-91f2-a2cfde40cb67",
+      "X-Amelia-Timestamp": "1570849498977",
+      "X-Amelia-Session-Mode": "USER",
+      "X-Amelia-Source-User-Type": "Amelia",
+      "X-Amelia-Message-Type": "OutboundBmlStatusMessage"
+    },
+    "messageText": null,
+    "inResponseToMessageId": "c996a94d-9d01-42be-a182-97df98693e1c",
+    "fromUserDisplayName": "Amelia",
+    "secureResponse": false,
+    "bml": "[[\"{\\\"Speech4108\\\":{\\\"text\\\":\\\"Hello, Greg. It's always a pleasure to see you.\\\",\\\"start\\\":\\\"0\\\"},\\\"Gest4112\\\":{\\\"speed\\\":\\\"1\\\",\\\"start\\\":\\\"Speech4108:_SyncWord2_\\\",\\\"name\\\":\\\"BeatMidLf01\\\"},\\\"Gest4114\\\":{\\\"speed\\\":\\\"1\\\",\\\"start\\\":\\\"Speech4108:_SyncWord8_\\\",\\\"name\\\":\\\"YouRt01\\\"},\\\"faceLexeme28\\\":{\\\"end\\\":\\\"1.0\\\",\\\"start\\\":\\\"0\\\",\\\"lexeme\\\":\\\"HAPPINESS\\\",\\\"amount\\\":\\\"0.65\\\",\\\"attackPeak\\\":\\\"0.25\\\",\\\"relax\\\":\\\"0.75\\\"},\\\"facs4110\\\":{\\\"end\\\":\\\"1\\\",\\\"start\\\":\\\"Speech4108:_SyncWord0_\\\",\\\"au\\\":\\\"62\\\",\\\"amount\\\":\\\"0.5\\\",\\\"side\\\":\\\"BOTH\\\",\\\"attackPeak\\\":\\\"0.5\\\",\\\"name\\\":\\\"Facs\\\",\\\"relax\\\":\\\"0.5\\\"},\\\"facs4115\\\":{\\\"end\\\":\\\"1\\\",\\\"start\\\":\\\"Speech4108:_SyncWord8_\\\",\\\"au\\\":\\\"55\\\",\\\"amount\\\":\\\"0.3\\\",\\\"attackPeak\\\":\\\"0.5\\\",\\\"name\\\":\\\"HEAD\\\",\\\"relax\\\":\\\"0.5\\\"},\\\"Head55\\\":{\\\"end\\\":\\\"2\\\",\\\"speed\\\":\\\"1\\\",\\\"repeat\\\":\\\"1\\\",\\\"start\\\":\\\"0\\\",\\\"lexeme\\\":\\\"up\\\",\\\"amount\\\":\\\"0.1\\\"},\\\"faceShift4116\\\":{\\\"start\\\":\\\"0\\\",\\\"au\\\":\\\"6\\\",\\\"amount\\\":\\\"0.0\\\",\\\"side\\\":\\\"BOTH\\\",\\\"attackPeak\\\":\\\"0.01\\\",\\\"name\\\":\\\"faceShift\\\"},\\\"faceShift4117\\\":{\\\"start\\\":\\\"0\\\",\\\"au\\\":\\\"12\\\",\\\"amount\\\":\\\"0.0\\\",\\\"side\\\":\\\"BOTH\\\",\\\"attackPeak\\\":\\\"0.01\\\",\\\"name\\\":\\\"faceShift\\\"}}\"]]",
+    "timestamp": 1570849498.977,
+    "messageType": "OutboundBmlStatusMessageFromAmelia",
+    "sessionId": "e5f8cbf9-b4f8-47cc-9693-e140bc89feb9",
+    "sessionSequence": 1,
+    "ameliaMessageType": "OutboundBmlStatusMessage",
+    "conversationId": "LNXXWSBCAAAAA-1",
+    "clockSkew": 398,
+    "sourceUserType": "Amelia",
+    "selfEcho": false,
+    "inputEnabled": false
+  },
+  {
+    "messageId": "f2823f39-d1bd-4dd0-9ab3-c18e977293e9",
+    "contextId": "a706404d-689a-458c-84da-150fd88a9e17",
+    "headers": {
+      "X-Amelia-Conversation-Id": "LNXXWSBCAAAAA-1",
+      "X-Amelia-Self-Echo": "false",
+      "X-Amelia-Clock-Skew": "398",
+      "X-Amelia-Session-Sequence": "2",
+      "X-Amelia-Session-Id": "e5f8cbf9-b4f8-47cc-9693-e140bc89feb9",
+      "X-Amelia-Input-Enabled": "false",
+      "X-Amelia-Debug-Message": "false",
+      "X-Amelia-Message-Id": "f2823f39-d1bd-4dd0-9ab3-c18e977293e9",
+      "X-Amelia-Timestamp": "1570849498445",
+      "X-Amelia-Session-Mode": "USER",
+      "X-Amelia-Source-User-Type": "Amelia",
+      "X-Amelia-Message-Type": "OutboundTextMessage"
+    },
+    "messageText": "Hello, Greg. It's always a pleasure to see you.",
+    "inResponseToMessageId": "c996a94d-9d01-42be-a182-97df98693e1c",
+    "fromUserDisplayName": "Amelia",
+    "secureResponse": false,
+    "hintText": null,
+    "responsePoolContext": {
+      "identifier": {
+        "groupCode": "COMMON",
+        "poolCode": "GREETING"
+      }
+    },
+    "emoticon": "HAPPY",
+    "timestamp": 1570849498.445,
+    "messageType": "TextMessageFromAmelia",
+    "sessionId": "e5f8cbf9-b4f8-47cc-9693-e140bc89feb9",
+    "sessionSequence": 2,
+    "ameliaMessageType": "OutboundTextMessage",
+    "conversationId": "LNXXWSBCAAAAA-1",
+    "clockSkew": 398,
+    "sourceUserType": "Amelia",
+    "selfEcho": false,
+    "inputEnabled": false
+  },
+  {
+    "messageId": "0a700cca-4892-44c3-a601-d540afb297e5",
+    "contextId": "a706404d-689a-458c-84da-150fd88a9e17",
+    "headers": {
+      "X-Amelia-Conversation-Id": "LNXXWSBCAAAAA-1",
+      "X-Amelia-Self-Echo": "false",
+      "X-Amelia-Clock-Skew": "398",
+      "X-Amelia-Session-Sequence": "3",
+      "X-Amelia-Session-Id": "e5f8cbf9-b4f8-47cc-9693-e140bc89feb9",
+      "X-Amelia-Input-Enabled": "true",
+      "X-Amelia-Debug-Message": "false",
+      "X-Amelia-Message-Id": "0a700cca-4892-44c3-a601-d540afb297e5",
+      "X-Amelia-Timestamp": "1570849498985",
+      "X-Amelia-Session-Mode": "USER",
+      "X-Amelia-Source-User-Type": "Amelia",
+      "X-Amelia-Message-Type": "OutboundAmeliaReadyMessage"
+    },
+    "messageText": null,
+    "inResponseToMessageId": "c996a94d-9d01-42be-a182-97df98693e1c",
+    "fromUserDisplayName": "Amelia",
+    "secureResponse": false,
+    "timestamp": 1570849498.985,
+    "messageType": "AmeliaReadyMessageFromAmelia",
+    "sessionId": "e5f8cbf9-b4f8-47cc-9693-e140bc89feb9",
+    "sessionSequence": 3,
+    "ameliaMessageType": "OutboundAmeliaReadyMessage",
+    "conversationId": "LNXXWSBCAAAAA-1",
+    "clockSkew": 398,
+    "sourceUserType": "Amelia",
+    "selfEcho": false,
+    "inputEnabled": true
+  }
+]
+</textarea>
+        </td>
+        <td>polledMessages.filter(message -> message.messageType === 'TextMessageFromAmelia')
+        <td>
+            <textarea id="lambdaFiltered" rows="20" cols="40"></textarea>
+        <td>
+        </td>
+    </tr>
+    <tr><td><span id="polledNumber"/></td><td>&nbsp;</td><td><span id="filteredNumber"/></td></tr>
+    <tr><td><input type="submit" value="parse" onclick="parseIt();"/>
+    </td>
+    </tr>
+</table>
+
+</body>
+</html>
