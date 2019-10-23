@@ -1,0 +1,23 @@
+<html>
+<head>
+<script src="pluginExample.js"></script>
+<script>
+function init() {
+	// establish our plugin
+	var m = new MyUserMediaPlugin();
+	var mockSdk = new MockSdk();
+	mockSdk.registerPlugin(m);
+	document.getElementById('recordButton').onclick=function() {
+		m.record();
+	}
+}
+
+</script>
+</head>
+<body onload="init()">
+<h2>For Demonstration purposes ONLY</h2>
+<p>Open your browser's Dev Console, then click Start a recording</p>
+<input type="button" id="recordButton" value="Start a Recording"/>
+</body>
+
+</html>
