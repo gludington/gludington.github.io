@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
+    <link rel="icon" />
+  <link href="css/app.5.18.4.b261884380d5632bb0e0.css" rel="stylesheet"></head>
+  <body>
+    <div id="root"></div>
+    <button style="position: fixed; z-index: -999; top: -200px; left: -200px; opacity: 0;" id="micme" aria-hidden="true"></button>
+    <div style="position: fixed; z-index: -999; top: -200px; left: -200px; opacity: 0;" id="fileUpload" aria-hidden="true"></div>
+    <div class="loading-graphic">
+      <img src="assets/loading.png" alt="" />
+    </div>
+
+    <script>
+      /*
+        Display message on top of window if browser is not supported using library from browser-update.org
+        Minimum versions:
+        Edge - 42, IE - 11, FF - 57, Opera - Latest, Safari - 10, Chrome 61
+      */
+      var $buoop = {required:{e:17,i:11,f:57,o:0,s:10,c:61},insecure:true,api:2018.08 };
+      function $buo_f () {
+        var e = document.createElement("script");
+        e.src = "js/browser-detection.min.js";
+        document.body.appendChild(e);
+      };
+      try {
+        document.addEventListener("DOMContentLoaded", $buo_f,false);
+      } catch(e) {
+        window.attachEvent("onload", $buo_f);
+      }
+    </script>
+  <script type="text/javascript" src="js/vendors.5.18.4.b261884380d5632bb0e0.js"></script><script type="text/javascript" src="js/app.5.18.4.b261884380d5632bb0e0.js"></script></body>
+</html>
