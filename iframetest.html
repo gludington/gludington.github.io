@@ -9,11 +9,34 @@ function showHelp() {
 	ameliaFrame.style.width="400px";
 	ameliaFrame.style.visibility="block";
 }
+
+function initMe() {
+	$.getJSON( "https://0d39361f.ngrok.io/Amelia/api/init", function( data ) {
+	  var items = [];
+	  $.each( data, function( key, val ) {
+	    items.push( "<li id='" + key + "'>" + val + "</li>" );
+	  });
+ 
+	  $( "<ul/>", {
+	    "class": "my-new-list",
+	    html: items.join( "" )
+	  }).appendTo( "body" );
+	});
+}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+console.log($);
 </script>
 <body><h2>Amelia in an iframe test</h2> 
 <p>We are trying to display the following link in the iframe: 
 <ul>
 <li><a onclick="showHelp();" href="#">Help me</a></li>
+</ul>
+<p>This one is to test an cross-frame ajax request</p>
+<ul>
+<li><a onclick="initMe();" href="#">Get an init from our ngrok site</a>
 </ul>
 <div style="float:right;clear:right"><iframe id="ameliaFrame" style="width:0px;height:0px;visibility:none"></iframe></div>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ornare lectus sit amet est placerat. Lacinia quis vel eros donec ac. Elementum sagittis vitae et leo duis ut. Lectus quam id leo in vitae turpis. Morbi tristique senectus et netus et. Sodales ut eu sem integer vitae justo eget magna fermentum. Vel eros donec ac odio tempor. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Sagittis orci a scelerisque purus semper. Dictum fusce ut placerat orci nulla pellentesque. Vestibulum sed arcu non odio euismod lacinia at. In fermentum et sollicitudin ac orci phasellus egestas. Ac turpis egestas sed tempus urna et pharetra pharetra. Aenean euismod elementum nisi quis.</p>
