@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Amelia - Error 404(Not Found)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+  </head>
+  <body>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        height:100%;
+      }
+
+      body {
+        font-family: 'Montserrat', serif;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+      }
+
+      .error-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .error-container div:nth-child(1) {
+        font-size: 2rem;
+      }
+
+      .error-container div:nth-child(2) {
+        font-size: 15rem;
+        font-weight: bold;
+      }
+
+      .error-container button {
+        color: white;
+        border-radius: 0.5rem;
+        font-size: .9rem;
+        margin-top: 1rem;
+        background: #4d5aff;
+        color: #fff;
+        border: none;
+        border-radius: .5rem;
+        padding: 1.3rem 3rem; 
+      }
+
+      @media only screen and (max-width: 767px) {
+          .error-container{
+            padding: 2rem;
+          }
+
+          .error-container div:nth-child(2) {
+            font-size: 12rem;
+            font-weight: bold;
+          }
+
+          .error-container button {
+            width: 100%; 
+          }
+      }
+    </style>
+
+    <div class="error-container">
+      <div>Page not found</div>
+      <div>404</div>
+      <button onclick="window.location.href='/AmeliaCust/'">Back to Homepage</button>
+    </div>
+  </body>
+</html>
