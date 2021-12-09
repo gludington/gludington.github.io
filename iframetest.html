@@ -4,7 +4,7 @@
 <script>
 function showHelp() {
 	var ameliaFrame = document.getElementById('ameliaFrame');
-	ameliaFrame.src="https://onelaw-v4.dev.amelia.com/Amelia/ui/greg/" + document.getElementById('version').value + "/avatar?domainCode=" + document.getElementById('domain').value + "&embed=iframe";
+	ameliaFrame.src=document.getElementById('baseUi').value + '?domainCode=' + document.getElementById('domain').value + "&embed=iframe";
 	ameliaFrame.style.height=document.getElementById('height').value + 'px';
 	ameliaFrame.style.width=document.getElementById('width').value + 'px';
 	ameliaFrame.style.visibility="block";
@@ -19,7 +19,7 @@ console.log($);
 <body><h2>Amelia in an iframe test</h2> 
 <p>We are trying to display the following link in the iframe: 
 	<br/>
-Version: <input id="version" value="3">
+Version: <input id="baseUi" value="https://onelaw-v4.dev.amelia.com/Amelia/ui/greg/3/avatar"/>?domainCode={domain}&embed=iframe
 <br/>
 Domain: <input id="domain" value="onelaw"/>
 <br/>
