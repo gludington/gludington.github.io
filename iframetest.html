@@ -5,8 +5,8 @@
 function showHelp() {
 	var ameliaFrame = document.getElementById('ameliaFrame');
 	ameliaFrame.src="https://onelaw-v4.dev.amelia.com/Amelia/ui/greg/" + document.getElementById('version').value + "/avatar?domainCode=onelaw&embed=iframe";
-	ameliaFrame.style.height="600px";
-	ameliaFrame.style.width="1000px";
+	ameliaFrame.style.height=document.getElementById('height').value + 'px';
+	ameliaFrame.style.width=document.getElementById('width').value + 'px';
 	ameliaFrame.style.visibility="block";
 }
 
@@ -18,7 +18,11 @@ console.log($);
 </script>
 <body><h2>Amelia in an iframe test</h2> 
 <p>We are trying to display the following link in the iframe: 
-<input id="version"/>
+Verson: <input id="version"/>
+<br/>
+Width : <input id="width" value="240"/>
+<br/>
+Height: <input id="height" value="600"/>
 <ul>
 <li><a onclick="showHelp();" href="#">Help me</a></li>
 </ul>
