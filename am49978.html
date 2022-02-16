@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="chat.css">
+</head>
+<body>
+<div>
+  <div>Additional setup might be required for the items below to work in the Customer UI bundle config.json</div>
+  <div class="chat-overlay-input-submit-header"><span>Click to send greeting via post message</span></div>
+  <button id="chatOverlayInputSubmit" type="button">Send greeting to Chat Overlay</button>
+</div>
+  <div>
+      <button id="close-convo">Close Conversation</button>
+  </div>
+  <div>
+      <button id="reset-convo">Reset Conversation</button>
+  </div>
+  <div>
+    <button id="send-attrib">Send Attributes</button>
+</div>
+<div class="chat-overlay chat-overlay-closed">
+   <div class="chat-overlay-banner">
+      <div class="chat-overlay-banner-title">Amelia</div>
+      <div class="chat-overlay-banner-helper">Virtual Assistant</div>
+      <div class="chat-overlay-banner-description">Hi there! I'm available to assist you with anything you need. Don't be shy!</div>
+  </div>
+  <div class="header-logo">
+     <img class="logo" src="/logo.png" alt="logo" />
+  </div>
+  <div class="chat-overlay-wrapper">
+    <div class="chat-overlay-header-mobile close">
+      <img class="logo" src="/logo.png" alt="logo" />
+      <img class="close" src="/close.png" alt="toggle chat overlay" />
+    </div>
+<!--     <iframe id="receiver" class="close no-scroll" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+      <p>Your browser does not support iframes.</p>
+    </iframe> -->
+<!--     <iframe id="receiver" class="close" src="https://bd360.prod.amelia.com/Amelia/ui/CustomerCareOverlay/13/?embed=iframe&domainCode=customercare" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+      <p>Your browser does not support iframes.</p>
+    </iframe> -->
+<!--     <iframe id="receiver" class="close" src="https://ameliav4.dev.amelia.com/Amelia/ui/raul/?domainCode=gateway_test&embed=iframe" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+      <p>Your browser does not support iframes.</p>
+    </iframe> -->
+    <!-- <iframe id="receiver" class="close" src="https://sharecare.amelia.com/Amelia/ui/AmeliaCust/?domainCode=covidscreener" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+      <p>Your browser does not support iframes.</p>
+    </iframe> -->
+<!--     <iframe id="receiver" class="close" src="https://ipsoft-amelia-uiux-v3.ipsoft.com/Amelia/ui/raul/?domainCode=Anonymous&embed=iframe" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+      <p>Your browser does not support iframes.</p>
+    </iframe> -->
+<!--    <iframe id="receiver" class="close" src="https://staffmark.dev.amelia.com/Amelia/" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+      <p>Your browser does not support iframes.</p>
+    </iframe> -->
+    <iframe id="receiver" class="close" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+      <p>Your browser does not support iframes.</p>
+    </iframe>
+    <div class="chat-overlay-header">
+      <img class="chat-overlay-header-img close" src="/close.png" alt="toggle chat overlay" />
+      <img class="chat-overlay-header-img open" src="/icon.png" alt="toggle chat overlay" />
+    </div>
+  </div>
+</div>
+
+ <script>
+   function receiveMessage (e) {
+       console.log('this is the event e', e.data);
+   }
+   
+   window.addEventListener('message', receiveMessage);
+   
+    var postMessageURL = 'https://localhost:9000/';
+//  var postMessageURL = 'https://bnp-v4.dev.amelia.com/Amelia/ui/centricpoc/';
+   
+//   var postMessageURL = 'https://staffmark.dev.amelia.com/Amelia/chat';
+//    var postMessageURL = 'https://ameliav4.dev.amelia.com/Amelia/ui/raul/';
+   
+   var iframeElem = document.getElementById('receiver');
+   document.getElementById('chatOverlayInputSubmit').addEventListener('click', function () {
+     console.log('Sending javascript event');
+    iframeElem.contentWindow.postMessage({
+      'actionType': 'ameliaSay',
+      'actionData': 'Hi there'
+    }, postMessageURL);
+  });
+   
+   var endConversation = function () {
+     iframeElem.contentWindow.postMessage({
+      'actionType': 'endConversation',
+      'actionData': true
+    }, postMessageURL);
+   };
+   
+   var resetConversation = function () {
+     iframeElem.contentWindow.postMessage({
+      'actionType': 'resetConversation',
+      'actionData': {
+        "token":"heythere"
+      }
+    }, postMessageURL);
+   };
+
+   var sendAttributes = function () {
+     iframeElem.contentWindow.postMessage({
+      'actionType': 'ameliaConversationAttributes',
+      'actionData': {token: 'testing attribute after reset'}
+    }, postMessageURL);
+   };
+   
+   document.getElementById('close-convo').addEventListener('click', function () {
+    endConversation();
+  });
+   
+   document.getElementById('reset-convo').addEventListener('click', function () {
+    resetConversation();
+  });
+
+   document.getElementById('send-attrib').addEventListener('click', function () {
+    sendAttributes();
+  });
+   
+   window.onbeforeunload = function () {
+     endConversation();
+     // return null; // No prompt
+     return ''; // Yes with prompt
+   }
+  // https://ipsoft-amelia-uiux-v3.ipsoft.com/Amelia/ui/raul/
+  // https://ameliav4.dev.amelia.com/Amelia/ui/raul/
+   
+  var isInit = false;
+  function init () {
+    console.log('i should be in here once');
+
+   document.getElementById('receiver').src = 'https://localhost:9000chat?embed=iframe&domainCode=damien';    
+//    document.getElementById('receiver').src = 'https://bnp-v4.dev.amelia.com/Amelia/ui/centricpoc/chat?embed=iframe&domainCode=v4_sandbox_fr';
+//    document.getElementById('receiver').src = 'https://staffmark.dev.amelia.com/Amelia/';
+//         document.getElementById('receiver').src = 'https://ameliav4.dev.amelia.com/Amelia/ui/raul/?domainCode=gateway_test&embed=iframe';
+//     document.getElementById('receiver').src = 'https://onelaw-v4.dev.amelia.com/Amelia/ui/AmeliaCust/?domainCode=onelaw&attrib_urlPath=home-pages'
+    // document.getElementById('receiver').src = 'https://onelaw-v4.dev.amelia.com/Amelia/ui/ClientPortalAvatar/';
+    isInit = true;
+  }
+   
+  function openChatOverlay (receiverElem, imgElemOpen, imgElemClose) {
+    if (!isInit) {
+      init();
+    }
+    document.getElementById('receiver').classList.add("open");
+    document.getElementById('receiver').classList.remove("close");
+    document.getElementsByClassName('chat-overlay')[0].classList.add("chat-overlay-open");
+    document.getElementsByClassName('chat-overlay')[0].classList.remove("chat-overlay-closed");
+    document.getElementsByClassName('chat-overlay-header-mobile')[0].classList.remove('close');
+    document.getElementsByClassName('chat-overlay-banner')[0].classList.add('close');
+    imgElemClose.style.opacity = 1;
+    imgElemOpen.style.opacity = 0;
+    localStorage.setItem('chatOverlayOpen', true);
+  }
+ 
+  function closeChatOverlay (receiverElem, imgElemOpen, imgElemClose) {
+    document.getElementById('receiver').classList.add("close");
+    document.getElementById('receiver').classList.remove("open");
+    document.getElementsByClassName('chat-overlay')[0].classList.add("chat-overlay-closed");
+    document.getElementsByClassName('chat-overlay')[0].classList.remove("chat-overlay-open");
+    document.getElementsByClassName('chat-overlay-header-mobile')[0].classList.add('close');
+    document.getElementsByClassName('chat-overlay-banner')[0].classList.remove('close');
+    imgElemOpen.style.opacity = 1;
+    imgElemClose.style.opacity = 0;
+    localStorage.setItem('chatOverlayOpen', false);
+  }
+ 
+  function toggleChatOverlay () {
+    /**
+     * Toggles opening and closing of the chatOverlay
+     * @returns - no return
+     */
+    var chatOverlayHeaderImgElemOpen = document.getElementsByClassName('chat-overlay-header-img open')[0];
+    var chatOverlayHeaderImgElemClose = document.getElementsByClassName('chat-overlay-header-img close')[0];
+    var receiverElem = document.getElementById('receiver');
+    if (receiverElem.classList.contains('close')) {
+      openChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+    } else {
+      closeChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+    }
+  }
+   
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return false;
+  }
+   
+  function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+   
+   /// Start of Safari 3rd party cookies workaround (Apple browsers doesn't allow third parties cookies to be set without user action), this only works for versions prior to Safari 13.1 desktop and iOS 13.4
+//    var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+//                navigator.userAgent &&
+//                navigator.userAgent.indexOf('CriOS') == -1 &&
+//                navigator.userAgent.indexOf('FxiOS') == -1;
+   
+//    var ua = window.navigator.userAgent;
+//    var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+//    var webkit = !!ua.match(/WebKit/i);
+//    var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+   
+//    if (isSafari || iOSSafari) {
+//       (function() {
+//         document.getElementsByClassName("chat-overlay-header")[0].onclick = function (e) {
+//           e.preventDefault();
+          
+          
+//           var ameliaChatOverlayCookie = getCookie('ameliaChatOverlay');
+//           if (!ameliaChatOverlayCookie) {
+//             var wnd = window.open("https://ipsoft-amelia-uiux-v3.ipsoft.com/Amelia/ui/releaseTesting/?embed=iframe&domainCode=Anonymous", "", "width=1,height=1");
+//             setTimeout(function() {
+//               wnd.close();
+// //               document.getElementById('receiver').src = "https://ipsoft-amelia-uiux-v3.ipsoft.com/Amelia/ui/releaseTesting/?embed=iframe&domainCode=Anonymous";
+//               document.getElementById('receiver').src = "http://app01.dev.ameliav4.amelia.com:8080/Amelia/ui/raul/2/?embed=iframe&domainCode=Anonymous";
+//             }, 3000);
+//             setCookie('ameliaChatOverlay', true, 3);
+//           }
+//           return false;
+//         };
+//       })();
+//        var windowObjectReference = null;
+//        document.getElementsByClassName("chat-overlay-header")[0].onclick = function (e) {
+//            e.preventDefault();
+//           if(windowObjectReference == null || windowObjectReference.closed) {
+//             console.log('test v7');
+//               var height=500;
+//               var width=500;
+//               // var t=document.body.scrollHeight - height + 250;
+//               // var l=document.body.clientWidth - width + 250;
+//               var l = document.body.clientWidth - (width/2);
+//               var t = document.body.scrollHeight - (height/2);
+//               windowObjectReference = window.open("https://sharecare.amelia.com/Amelia/ui/screener/?embed=iframe&bpn_Connect=www.ipsoft.com", "", 'height='+height+', width='+width+', left='+l+', top='+t);
+//                //windowObjectReference = window.open("https://sharecare.amelia.com/Amelia/ui/screener/?embed=iframe&bpn_Connect=www.ipsoft.com", "", "width=200,height=200");
+//           } else {
+//             windowObjectReference.focus();
+//           }
+//          return false;
+//        }
+//      }
+   
+   /// END of Safari 3rd party cookies workaround
+ 
+  var chatOverlayHeaderElem = document.getElementsByClassName('chat-overlay-header')[0];
+  chatOverlayHeaderElem.addEventListener('click', toggleChatOverlay);
+  var chatOverlayHeaderElemMobile = document.getElementsByClassName('chat-overlay-header-mobile')[0];
+  chatOverlayHeaderElemMobile.addEventListener('click', toggleChatOverlay);
+ 
+ 
+  if (typeof(Storage) !== "undefined") {
+    var chatOverlayOpen = localStorage.getItem('chatOverlayOpen');
+    var chatOverlayDefaultStateClosed = true;
+    var chatOverlayHeaderImgElemOpen = document.getElementsByClassName('chat-overlay-header-img open')[0];
+    var chatOverlayHeaderImgElemClose = document.getElementsByClassName('chat-overlay-header-img close')[0];
+    var receiverElem = document.getElementById('receiver');
+
+    
+    //     if (chatOverlayOpen && localStorage.getItem('chatOverlayOpen') !== "true" || (chatOverlayOpen === null && chatOverlayDefaultStateClosed)) {
+    //       closeChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+    //     } else {
+    //       openChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+    //     }
+    
+    // Conditional below added to support Safari third party cookie issue (original conditional above without)
+//     var ameliaChatOverlayCookie = getCookie('ameliaChatOverlay');
+//     if (((isSafari || iOSSafari) && !ameliaChatOverlayCookie) || (chatOverlayOpen && localStorage.getItem('chatOverlayOpen') !== "true" || (chatOverlayOpen === null && chatOverlayDefaultStateClosed))) {
+    
+    if (chatOverlayOpen && localStorage.getItem('chatOverlayOpen') !== "true") {
+//     if (((isSafari || iOSSafari) && !ameliaChatOverlayCookie) || (chatOverlayOpen && localStorage.getItem('chatOverlayOpen') !== "true" || (chatOverlayOpen === null && chatOverlayDefaultStateClosed))) {
+      console.log('im closing overlay');
+      closeChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+    } else {
+      console.log('im opening overlay');
+      openChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+    }
+  } else {
+      // Sorry! No Web Storage support..
+    console.log('No localStorage support')
+  }
+   
+   //START of Chat Overlay drag and drop
+      var dragItem = document.querySelector(".chat-overlay");
+      var touchItem = document.querySelector(".chat-overlay-header-img.open");
+      var chatOverlayWrapper = document.querySelector('.chat-overlay-wrapper');
+      var container = document.querySelector("body");
+
+      var active = false;
+      var currentX;
+      var currentY;
+      var initialX;
+      var initialY;
+      var xOffset = 0;
+      var yOffset = 0;
+
+      container.addEventListener("touchstart", dragStart, false);
+      container.addEventListener("touchend", dragEnd, false);
+      container.addEventListener("touchmove", drag, false);
+
+      container.addEventListener("mousedown", dragStart, false);
+      container.addEventListener("mouseup", dragEnd, false);
+      container.addEventListener("mousemove", drag, false);
+
+      function dragStart(e) {
+        dragged = false;
+        if (e.type === "touchstart") {
+          initialX = e.touches[0].clientX - xOffset;
+          initialY = e.touches[0].clientY - yOffset;
+        } else {
+          initialX = e.clientX - xOffset;
+          initialY = e.clientY - yOffset;
+        }
+
+        if (e.target === touchItem) {
+          active = true;
+        }
+      }
+
+      function dragEnd(e) {
+        initialX = currentX;
+        initialY = currentY;
+
+        active = false;
+        const bodyBound = document.body.getBoundingClientRect();
+        const chatOverlayHeaderBound = document.getElementsByClassName('chat-overlay-header')[0].getBoundingClientRect();
+        const center = {
+          x: chatOverlayHeaderBound.x + chatOverlayHeaderBound.width/2,
+          y: chatOverlayHeaderBound.y + chatOverlayHeaderBound.height/2
+        };
+        if(center.x < bodyBound.width/2 && center.y < bodyBound.height/2) {
+          console.log('left side/ top side');
+        } else if (center.x < bodyBound.width/2 && center.y > bodyBound.height/2) {
+          console.log('left side/ bottom side');
+        } else if (center.x > bodyBound.width/2 && center.y < bodyBound.height/2 ) {
+          console.log('right side/ top side');
+        } else {
+          console.log('right side/ bottom side');
+        }
+
+
+        console.log('center', center);
+      }
+
+      function drag(e) {
+        if (active) {
+          e.preventDefault();
+
+          dragged = true;
+          if (e.type === "touchmove") {
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
+          } else {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+          }
+
+          xOffset = currentX;
+          yOffset = currentY;
+          setTranslate(currentX, currentY, dragItem);
+        }
+      }
+
+      function setTranslate(xPos, yPos, el) {
+        el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+      }
+   /// END of Chat Overlay drag and drop
+ 
+</script>
+</body>
+</html>
