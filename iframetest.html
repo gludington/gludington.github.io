@@ -8,6 +8,8 @@ function showHelp() {
 	ameliaFrame.style.height=document.getElementById('height').value + 'px';
 	ameliaFrame.style.width=document.getElementById('width').value + 'px';
 	ameliaFrame.style.visibility="block";
+
+	base = document.getElementById('baseUi').value;
 }
 
 </script>
@@ -15,6 +17,11 @@ function showHelp() {
 
 <script>
 console.log($);
+var base;
+function MyFunction() {
+ var receiverElemContentWindow = document.getElementById('ameliaFrame').contentWindow;
+    receiverElemContentWindow.postMessage({actionType: 'ameliaSay', actionData: 'aloha'}, base);
+};;
 </script>
 <body><h2>Amelia in an iframe test</h2> 
 <p>We are trying to display the following link in the iframe: 
@@ -27,6 +34,9 @@ Height: <input id="height" value="600"/>
 <ul>
 <li><a onclick="showHelp();" href="#">Open Iframe</a></li>
 </ul>
+<ul>
+<li><a href="myFunction();return false">Post Aloha</a></li>
+</ul>>
 <div style="float:right;clear:right"><iframe id="ameliaFrame" allow="autoplay; camera; microphone" style="width:0px;height:0px;visibility:none"></iframe></div>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ornare lectus sit amet est placerat. Lacinia quis vel eros donec ac. Elementum sagittis vitae et leo duis ut. Lectus quam id leo in vitae turpis. Morbi tristique senectus et netus et. Sodales ut eu sem integer vitae justo eget magna fermentum. Vel eros donec ac odio tempor. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Sagittis orci a scelerisque purus semper. Dictum fusce ut placerat orci nulla pellentesque. Vestibulum sed arcu non odio euismod lacinia at. In fermentum et sollicitudin ac orci phasellus egestas. Ac turpis egestas sed tempus urna et pharetra pharetra. Aenean euismod elementum nisi quis.</p>
 
