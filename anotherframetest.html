@@ -10,23 +10,485 @@ function showHelp() {
 	ameliaFrame.style.visibility="block";
 }
 </script>
+<style>
+.chat-overlay {
+  position: fixed;
+  width: 376px;
+  height: 535px;
+  bottom: 24px;
+  right: 24px;
+  z-index: 90;
+}
+  
+.chat-overlay-closed .header-logo {
+  display: none;
+}
+  
+.chat-overlay-banner {
+  display: none;
+  height: 100px;
+  background: rgb(247, 247, 247);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 1rem 1rem 5rem rgba(0, 0, 0, 0.5);
+}
+  
+.chat-overlay-banner.chat-overlay-close {
+   display: none;
+}
+  
+.chat-overlay-banner-title {
+   padding-bottom: 0.2rem;
+   font-weight: 800;
+ }
+  
+.chat-overlay-banner-helper {
+   opacity: 0.50;
+   padding-bottom: 0.8rem;
+ }
+  
+.header-logo {
+  height: 30px;
+  background: rgb(247, 247, 247);
+  border-radius: 0.5rem 0.5rem 0 0;
+  display: none;
+}
+  
+.header-logo img, .header-logo svg {
+  height: inherit;
+}
+  
+.header-logo img.chat-overlay-close {
+  margin-left: auto;
+  align-self: center;
+  height: 50%;
+  padding: 0.5rem;
+}
+  
+.header-logo svg.chat-overlay-close {
+  margin-left: auto;
+  align-self: center;
+  height: 90%;
+  width: 8%;
+}
+ 
+.chat-overlay-open {
+    height: 535px;
+}
+ 
+.chat-overlay-closed {
+    height: 71px;
+}
+ 
+.chat-overlay-wrapper {
+  width: 376px;
+  height: 448px;
+}
+ 
+.chat-overlay-header-mobile {
+    display: none;
+}
+ 
+.chat-overlay-header {
+  position: relative;
+  height: 56px;
+  width: 56px;
+  border: 1px solid #FFF;
+  background: #FFF;
+  margin-left: auto;
+  border-radius: 50%;
+  box-shadow: 1rem 1rem 5rem rgba(0, 0, 0, 0.5);
+}
+ 
+#receiver {
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 1rem 1rem 5rem rgba(0, 0, 0, 0.5);
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+ 
+#receiver.chat-overlay-close {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+ 
+#receiver.chat-overlay-open {
+  height: 100%;
+  opacity: 1;
+  overflow: hidden;
+}
+ 
+.chat-overlay-header-img {
+  position: absolute;
+  max-width: 24px;
+  max-height: 24px;
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin: auto;
+}
+ 
+.chat-overlay-header-img.open {
+  opacity: 0;
+}
+   
+.absolute-cart-box {
+  display: none;
+}
+ 
+@media only screen and (max-width: 768px) {
+  .chat-overlay {
+    width: 100%;
+    position: fixed;
+    height: 100%;
+  }
+  
+  .chat-overlay .header-logo {
+    display: none;
+  }
+ 
+  .chat-overlay-header-mobile {
+    display: flex;
+    width: inherit;
+    height: 9%;
+    background: rgb(247, 247, 247);
+  }
+ 
+  .chat-overlay-header-mobile img {
+    height: 30%;
+    padding: 1rem;
+    align-self: center;
+  }
+  
+  .chat-overlay-header-mobile svg.chat-overlay-close {
+    padding: 0.7rem;
+    width: 45px;
+    margin-left: auto;
+    height: 100%;
+  }
+  
+  .chat-overlay-header-mobile img.logo {
+    height: 80%;
+    padding: 1rem;
+  }
+ 
+  .chat-overlay-header-mobile.chat-overlay-close {
+    display: none;
+  }
+ 
+  #receiver {
+    border-radius: 0;
+  }
+ 
+  #receiver.chat-overlay-close {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+ 
+  #receiver.chat-overlay-open {
+    height: 91%;
+    opacity: 1;
+    overflow: hidden;
+  }
+ 
+  .chat-overlay-open {
+    height: 100%;
+    bottom: 0px;
+    right: 0px;
+  }
+ 
+  .chat-overlay-closed {
+    height: 205px;;
+    bottom: 24px;
+    right: 24px;
+    width: 88%;
+  }
+ 
+  .chat-overlay-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
+<script>
+var clientConfig = {
+  iframeSrc: 'https://localhost:9000/?embed=iframe&domainCode=uiux',
+  openOnLoad: false,
+  header: {
+    backgroundColor: 'green',
+    backgroundImage: './ameliaLogo.png'
+  },
+  openCloseContainer: {
+    openIconSrc: './icon.png',
+    closeIconSrc: './close.png',
+    backgroundColor: 'blue'
+  },
+  banner: {
+    title: 'Amelia',
+    helper: 'Virtual Assistant',
+    description: 'Hello, I am Amelia. How can I help you today? If this is a medical emergency, please call 911 or report to your local emergency room.'
+  },
+  dragAndDropChatOverlay: true
+};
+</script>
+<script>
+	var isInit = false;
+    var chatOverlayDefaultStateOpen = false;
+
+    function Config (config) {
+      this.header = config.header || {};
+      this.openCloseContainer = config.openCloseContainer || {};
+      this.openOnLoad = config.openOnLoad || false;
+      this.iframeSrc = config.iframeSrc || '';
+      this.banner = {
+        title: config.banner && config.banner.title || '',
+        helper: config.banner && config.banner.helper || '',
+        description: config.banner && config.banner.description || ''
+      };
+      this.dragAndDropChatOverlay = config.dragAndDropChatOverlay;
+    }
+
+    Config.prototype = {
+      setConfig: function () {
+        var styles = [];
+        if (this.header.backgroundImage) {
+          var headerLogo = document.querySelector('.header-logo img.logo');
+          headerLogo.src = this.header.backgroundImage;
+          var chatOverlayHeaderMobile = document.querySelector('.chat-overlay-wrapper .chat-overlay-header-mobile img.logo');
+          chatOverlayHeaderMobile.src = this.header.backgroundImage;
+        }
+
+        if (this.header.backgroundColor) {
+          styles.push('.header-logo { display: flex; background-color: ' + this.header.backgroundColor + '}'); 
+          styles.push('.chat-overlay-wrapper .chat-overlay-header-mobile { background-color: ' + this.header.backgroundColor + '}');
+        }
+
+        if (this.openCloseContainer.backgroundColor) {
+          styles.push('.chat-overlay-header { background-color: ' + this.openCloseContainer.backgroundColor + '}');
+        }
+
+        if (this.openCloseContainer.openIconSrc) {
+          var openIconSrc = document.querySelector('.chat-overlay-header .chat-overlay-open');
+          openIconSrc.src = this.openCloseContainer.openIconSrc;
+        }
+
+        if (this.openCloseContainer.closeIconSrc) {
+          var closeIconSrc = document.querySelector('.chat-overlay-header .chat-overlay-close');
+          closeIconSrc.src = this.openCloseContainer.closeIconSrc;
+        }
+
+        if (this.openOnLoad) {
+          chatOverlayDefaultStateOpen = true;
+        }
+
+        if (this.banner.title && this.banner.helper && this.banner.description) {
+          styles.push('.chat-overlay-banner { display: block; }');
+          styles.push('.chat-overlay-closed { height: 210px; }');
+          var chatOverlayBanner = document.querySelector('.chat-overlay-banner');
+          chatOverlayBanner.children[0].innerHTML = this.banner.title;
+          chatOverlayBanner.children[1].innerHTML = this.banner.helper;
+          chatOverlayBanner.children[2].innerHTML = this.banner.description;
+        }
+
+        if (styles.length) {
+          var stylesElem = document.createElement('style');
+          stylesElem.innerHTML = styles.join(' ');
+          document.body.appendChild(stylesElem);
+        }
+
+        if (this.dragAndDropChatOverlay) {
+          var container = document.querySelector("body");
+          container.addEventListener("touchstart", dragStart, false);
+          container.addEventListener("touchend", dragEnd, false);
+          container.addEventListener("touchmove", drag, false);
+
+          container.addEventListener("mousedown", dragStart, false);
+          container.addEventListener("mouseup", dragEnd, false);
+          container.addEventListener("mousemove", drag, false);
+        }
+      }
+    }
+
+    var config = new Config(clientConfig);
+    config.setConfig();
+
+    function init () {
+      document.getElementById('receiver').src = config.iframeSrc;
+      isInit = true;
+    }
+     
+    function openChatOverlay (receiverElem, imgElemOpen, imgElemClose) {
+      if (!isInit) {
+        init();
+      }
+      document.getElementById('receiver').classList.add("chat-overlay-open");
+      document.getElementById('receiver').classList.remove("chat-overlay-close");
+      document.getElementsByClassName('chat-overlay')[0].classList.add("chat-overlay-open");
+      document.getElementsByClassName('chat-overlay')[0].classList.remove("chat-overlay-closed");
+      document.getElementsByClassName('chat-overlay-header-mobile')[0].classList.remove('chat-overlay-close');
+      document.getElementsByClassName('chat-overlay-banner')[0].classList.add('chat-overlay-close');
+      if (imgElemClose) imgElemClose.style.opacity = 1;
+      if (imgElemOpen) imgElemOpen.style.opacity = 0;
+      localStorage.setItem('chatOverlayOpen', true);
+    }
+   
+    function closeChatOverlay (receiverElem, imgElemOpen, imgElemClose) {
+      document.getElementById('receiver').classList.add("chat-overlay-close");
+      document.getElementById('receiver').classList.remove("chat-overlay-open");
+      document.getElementsByClassName('chat-overlay')[0].classList.add("chat-overlay-closed");
+      document.getElementsByClassName('chat-overlay')[0].classList.remove("chat-overlay-open");
+      document.getElementsByClassName('chat-overlay-header-mobile')[0].classList.add('chat-overlay-close');
+      document.getElementsByClassName('chat-overlay-banner')[0].classList.remove('chat-overlay-close');
+      if (imgElemOpen) imgElemOpen.style.opacity = 1;
+      if (imgElemClose) imgElemClose.style.opacity = 0;
+      localStorage.setItem('chatOverlayOpen', false);
+    }
+   
+    function toggleChatOverlay () {
+      /**
+       * Toggles opening and closing of the chatOverlay
+       * @returns - no return
+       */
+      var chatOverlayHeaderImgElemOpen = document.getElementsByClassName('chat-overlay-header-img chat-overlay-open')[0];
+      var chatOverlayHeaderImgElemClose = document.getElementsByClassName('chat-overlay-header-img chat-overlay-close')[0];
+      var receiverElem = document.getElementById('receiver');
+      if (receiverElem.classList.contains('chat-overlay-close')) {
+        openChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+      } else {
+        closeChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+      }
+    }
+   
+    var chatOverlayHeaderElem = document.getElementsByClassName('chat-overlay-header')[0];
+    chatOverlayHeaderElem.addEventListener('click', toggleChatOverlay);
+    var chatOverlayHeaderElemMobile = document.getElementsByClassName('chat-overlay-header-mobile')[0];
+    chatOverlayHeaderElemMobile.addEventListener('click', toggleChatOverlay);
+    var chatOverlayHeaderLogoClose = document.querySelector('.header-logo img.chat-overlay-close');
+    if (chatOverlayHeaderLogoClose) chatOverlayHeaderLogoClose.addEventListener('click', closeChatOverlay);
+    if (chatOverlayHeaderLogoClose) chatOverlayHeaderLogoClose.addEventListener('click', toggleChatOverlay);
+    var chatOverlayHeaderLogoSvgClose = document.querySelector('.header-logo svg.chat-overlay-close');
+    if (chatOverlayHeaderLogoSvgClose) chatOverlayHeaderLogoSvgClose.addEventListener('click', toggleChatOverlay);
+   
+   
+    if (typeof(Storage) !== "undefined") {
+      var chatOverlayOpen = localStorage.getItem('chatOverlayOpen');
+      var chatOverlayHeaderImgElemOpen = document.getElementsByClassName('chat-overlay-header-img chat-overlay-open')[0];
+      var chatOverlayHeaderImgElemClose = document.getElementsByClassName('chat-overlay-header-img chat-overlay-close')[0];
+      var receiverElem = document.getElementById('receiver');
+      if (chatOverlayOpen && localStorage.getItem('chatOverlayOpen') === "false")  {
+        closeChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+      } else if (chatOverlayOpen && localStorage.getItem('chatOverlayOpen') === "true" || chatOverlayDefaultStateOpen) {
+        openChatOverlay(receiverElem, chatOverlayHeaderImgElemOpen, chatOverlayHeaderImgElemClose);
+      }
+    } else {
+        // Sorry! No Web Storage support..
+      console.log('No localStorage support')
+    }
+
+    //START of Chat Overlay drag and drop
+    var dragItem = document.querySelector(".chat-overlay");
+    var touchItem = document.querySelector(".chat-overlay-header-img.chat-overlay-open");
+    var chatOverlayWrapper = document.querySelector('.chat-overlay-wrapper');
+
+    var active = false;
+    var currentX;
+    var currentY;
+    var initialX;
+    var initialY;
+    var xOffset = 0;
+    var yOffset = 0;
+
+    function dragStart(e) {
+      dragged = false;
+      if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX - xOffset;
+        initialY = e.touches[0].clientY - yOffset;
+      } else {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+      }
+
+      if (e.target === touchItem) {
+        active = true;
+      }
+    }
+
+    function dragEnd(e) {
+      initialX = currentX;
+      initialY = currentY;
+
+      active = false;
+      const bodyBound = document.body.getBoundingClientRect();
+      const chatOverlayHeaderBound = document.getElementsByClassName('chat-overlay-header')[0].getBoundingClientRect();
+      const center = {
+        x: chatOverlayHeaderBound.x + chatOverlayHeaderBound.width/2,
+        y: chatOverlayHeaderBound.y + chatOverlayHeaderBound.height/2
+      };
+    }
+
+    function drag(e) {
+      if (active) {
+        e.preventDefault();
+
+        dragged = true;
+        if (e.type === "touchmove") {
+          currentX = e.touches[0].clientX - initialX;
+          currentY = e.touches[0].clientY - initialY;
+        } else {
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+        }
+
+        xOffset = currentX;
+        yOffset = currentY;
+        setTranslate(currentX, currentY, dragItem);
+      }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+    /// END of Chat Overlay drag and drop
+</script>
+</head>
 <body><h2>Amelia in an iframe test</h2> 
-<p>We are trying to display the following link in the iframe: 
-<ul>
-<li><a onclick="showHelp();" href="#">Help me</a></li>
-</ul>
-<div style="float:right;clear:right"><iframe id="ameliaFrame" style="width:0px;height:0px;visibility:none"></iframe></div>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ornare lectus sit amet est placerat. Lacinia quis vel eros donec ac. Elementum sagittis vitae et leo duis ut. Lectus quam id leo in vitae turpis. Morbi tristique senectus et netus et. Sodales ut eu sem integer vitae justo eget magna fermentum. Vel eros donec ac odio tempor. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Sagittis orci a scelerisque purus semper. Dictum fusce ut placerat orci nulla pellentesque. Vestibulum sed arcu non odio euismod lacinia at. In fermentum et sollicitudin ac orci phasellus egestas. Ac turpis egestas sed tempus urna et pharetra pharetra. Aenean euismod elementum nisi quis.</p>
-
-<p>Lacus sed turpis tincidunt id. Nec feugiat in fermentum posuere urna nec. Tellus cras adipiscing enim eu turpis egestas pretium aenean pharetra. Sed faucibus turpis in eu mi bibendum neque egestas. Leo in vitae turpis massa sed elementum tempus egestas. Ac ut consequat semper viverra nam libero justo laoreet sit. Mattis enim ut tellus elementum sagittis vitae. Viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas. Nullam ac tortor vitae purus faucibus ornare. Metus aliquam eleifend mi in. Bibendum arcu vitae elementum curabitur vitae nunc. Dignissim sodales ut eu sem. Nec feugiat in fermentum posuere urna nec tincidunt praesent. Non diam phasellus vestibulum lorem sed risus ultricies. In iaculis nunc sed augue lacus viverra. Iaculis at erat pellentesque adipiscing. Diam quam nulla porttitor massa. Cras adipiscing enim eu turpis egestas pretium aenean. Magnis dis parturient montes nascetur ridiculus.</p>
-
-<p>In egestas erat imperdiet sed euismod. Arcu non odio euismod lacinia at quis risus sed vulputate. Consequat mauris nunc congue nisi vitae. Ut consequat semper viverra nam libero justo laoreet sit amet. Facilisis mauris sit amet massa vitae. Accumsan lacus vel facilisis volutpat est velit egestas dui. Vestibulum rhoncus est pellentesque elit ullamcorper dignissim. Arcu odio ut sem nulla pharetra diam. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien. Adipiscing enim eu turpis egestas pretium. Urna et pharetra pharetra massa. Sed viverra tellus in hac habitasse platea dictumst.</p>
-
-<p>Donec massa sapien faucibus et molestie ac feugiat sed. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Et sollicitudin ac orci phasellus egestas. Egestas pretium aenean pharetra magna ac placerat. Neque sodales ut etiam sit. Vestibulum lectus mauris ultrices eros in cursus turpis. Proin sed libero enim sed faucibus. Potenti nullam ac tortor vitae purus faucibus ornare. Felis donec et odio pellentesque diam volutpat commodo. Adipiscing enim eu turpis egestas pretium aenean pharetra. Erat nam at lectus urna. At erat pellentesque adipiscing commodo elit at. Nec dui nunc mattis enim ut tellus elementum sagittis vitae. Consequat interdum varius sit amet mattis vulputate. Consectetur adipiscing elit duis tristique.</p>
-
-<p>Sed vulputate mi sit amet mauris commodo. Convallis convallis tellus id interdum velit. Imperdiet proin fermentum leo vel orci porta non. Nisi porta lorem mollis aliquam ut porttitor leo a diam. Eu tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Nascetur ridiculus mus mauris vitae ultricies leo. Enim diam vulputate ut pharetra sit amet. Pellentesque habitant morbi tristique senectus et. Etiam tempor orci eu lobortis elementum. Est placerat in egestas erat. Amet purus gravida quis blandit. Netus et malesuada fames ac turpis egestas maecenas pharetra convallis. Sit amet nulla facilisi morbi tempus iaculis urna.</p>
-
-<p>If you click the link above, you should be able to chat with Amelia directly, while the iFrame below isn't working properly - generating page errors + displaying a log in prompt that is not working. <br /> (Tested with Chrome, Firefox, Edge)</p>
-
+<div class="chat-overlay chat-overlay-closed">
+     <div class="chat-overlay-banner">
+        <div class="chat-overlay-banner-title">Amelia</div>
+        <div class="chat-overlay-banner-helper">Virtual Assistant</div>
+        <div class="chat-overlay-banner-description">Hello, I am Amelia. How can I help you today? If this is a medical emergency, please call 911 or report to your local emergency room.</div>
+    </div>
+    <div class="header-logo">
+       <img class="logo" alt="logo" />
+        <!-- <img class="chat-overlay-close" src="./close.png" alt="toggle chat overlay" /> -->
+        <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <line x1="4" y1="4" x2="20" y2="20" stroke="#003592" stroke-width="3"></line>
+          <line x1="20" y1="4" x2="4" y2="20" stroke="#003592" stroke-width="3"></line>
+        </svg>
+    </div>
+    <div class="chat-overlay-wrapper">
+      <div class="chat-overlay-header-mobile chat-overlay-close">
+        <img class="logo" alt="logo" />
+        <!-- <img class="chat-overlay-close" src="/close.png" alt="toggle chat overlay" /> -->
+        <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <line x1="1" y1="1" x2="40" y2="40" stroke="#003592" stroke-width="4"></line>
+          <line x1="40" y1="1" x2="1" y2="40" stroke="#003592" stroke-width="4"></line>
+        </svg>
+      </div>
+      <iframe id="receiver" class="chat-overlay-close" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+      <div class="chat-overlay-header">
+        <img class="chat-overlay-header-img chat-overlay-close" alt="toggle chat overlay" />
+        <img class="chat-overlay-header-img chat-overlay-open" alt="toggle chat overlay" />
+      </div>
+    </div>
+  </div>
 
 </body> </html>
