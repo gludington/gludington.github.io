@@ -237,6 +237,43 @@ var clientConfig = {
   dragAndDropChatOverlay: true
 };
 </script>
+
+</head>
+<body><h2>Amelia in an iframe test</h2> 
+<div class="chat-overlay chat-overlay-closed">
+     <div class="chat-overlay-banner">
+        <div class="chat-overlay-banner-title">Amelia</div>
+        <div class="chat-overlay-banner-helper">Virtual Assistant</div>
+        <div class="chat-overlay-banner-description">Hello, I am Amelia. How can I help you today? If this is a medical emergency, please call 911 or report to your local emergency room.</div>
+    </div>
+    <div class="header-logo">
+       <img class="logo" alt="logo" />
+        <!-- <img class="chat-overlay-close" src="./close.png" alt="toggle chat overlay" /> -->
+        <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <line x1="4" y1="4" x2="20" y2="20" stroke="#003592" stroke-width="3"></line>
+          <line x1="20" y1="4" x2="4" y2="20" stroke="#003592" stroke-width="3"></line>
+        </svg>
+    </div>
+    <div class="chat-overlay-wrapper">
+      <div class="chat-overlay-header-mobile chat-overlay-close">
+        <img class="logo" alt="logo" />
+        <!-- <img class="chat-overlay-close" src="/close.png" alt="toggle chat overlay" /> -->
+        <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <line x1="1" y1="1" x2="40" y2="40" stroke="#003592" stroke-width="4"></line>
+          <line x1="40" y1="1" x2="1" y2="40" stroke="#003592" stroke-width="4"></line>
+        </svg>
+      </div>
+      <iframe id="receiver" class="chat-overlay-close" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+      <div class="chat-overlay-header">
+        <img class="chat-overlay-header-img chat-overlay-close" alt="toggle chat overlay" />
+        <img class="chat-overlay-header-img chat-overlay-open" alt="toggle chat overlay" />
+      </div>
+    </div>
+  </div>
+
+</body>
 <script>
 	var isInit = false;
     var chatOverlayDefaultStateOpen = false;
@@ -455,40 +492,4 @@ var clientConfig = {
       el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
     }
     /// END of Chat Overlay drag and drop
-</script>
-</head>
-<body><h2>Amelia in an iframe test</h2> 
-<div class="chat-overlay chat-overlay-closed">
-     <div class="chat-overlay-banner">
-        <div class="chat-overlay-banner-title">Amelia</div>
-        <div class="chat-overlay-banner-helper">Virtual Assistant</div>
-        <div class="chat-overlay-banner-description">Hello, I am Amelia. How can I help you today? If this is a medical emergency, please call 911 or report to your local emergency room.</div>
-    </div>
-    <div class="header-logo">
-       <img class="logo" alt="logo" />
-        <!-- <img class="chat-overlay-close" src="./close.png" alt="toggle chat overlay" /> -->
-        <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <line x1="4" y1="4" x2="20" y2="20" stroke="#003592" stroke-width="3"></line>
-          <line x1="20" y1="4" x2="4" y2="20" stroke="#003592" stroke-width="3"></line>
-        </svg>
-    </div>
-    <div class="chat-overlay-wrapper">
-      <div class="chat-overlay-header-mobile chat-overlay-close">
-        <img class="logo" alt="logo" />
-        <!-- <img class="chat-overlay-close" src="/close.png" alt="toggle chat overlay" /> -->
-        <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <line x1="1" y1="1" x2="40" y2="40" stroke="#003592" stroke-width="4"></line>
-          <line x1="40" y1="1" x2="1" y2="40" stroke="#003592" stroke-width="4"></line>
-        </svg>
-      </div>
-      <iframe id="receiver" class="chat-overlay-close" frameborder="0" width="100%" height="100%" allow="geolocation; microphone; camera">
-        <p>Your browser does not support iframes.</p>
-      </iframe>
-      <div class="chat-overlay-header">
-        <img class="chat-overlay-header-img chat-overlay-close" alt="toggle chat overlay" />
-        <img class="chat-overlay-header-img chat-overlay-open" alt="toggle chat overlay" />
-      </div>
-    </div>
-  </div>
-
-</body> </html>
+</script></html>
