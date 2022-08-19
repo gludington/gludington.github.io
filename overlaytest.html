@@ -234,6 +234,7 @@ function MyFunction() {
 Version: <input id="baseUi" size="100" value="https://ipsoft-amelia-qa-currentstable.ipsoft.com/Amelia/ui/current/chat?embed=iframe&domainCode=maxtest&attrib_urlPath=mainPage"/> (make sure to have embed=iframe)
 <br/>
 Open OnLoad: <input type='checkbox' id='openOnLoad'/>
+<p><b>IMPORTANT:</b> Open OnLoad is for the initial state.  On this page implementation, once a user has opened or closed the overlay, that preference is saved in local storage and will override this checkbox.</p>
 <br/>
 <ul>
 <li><a onclick="showHelp();" href="#">Generate encoded url and reload</a></li>
@@ -308,7 +309,7 @@ var clientConfig = {
     backgroundImage: './ameliaLogo.png'
   },
   openCloseContainer: {
-    openIconSrc: './icon.png',
+    openIconSrc: './open.png',
     closeIconSrc: './close.png',
     backgroundColor: 'blue'
   },
