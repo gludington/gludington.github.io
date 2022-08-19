@@ -231,13 +231,14 @@ function MyFunction() {
 <body style="margin-bottom:75%"><h2>Amelia in an iframe test</h2> 
 <p>We are trying to display the following link in the iframe: 
 	<br/>
-Version: <input id="baseUi" size="100" value="https://ipsoft-amelia-qa-currentstable.ipsoft.com/Amelia/ui/current/chat?embed=iframe&domainCode=maxtest&attrib_urlPath=mainPage"/> (make sure to have embed=iframe)
+Full Chat URL: <input id="baseUi" size="100" value="https://ipsoft-amelia-qa-currentstable.ipsoft.com/Amelia/ui/current/chat?embed=iframe&domainCode=maxtest&attrib_urlPath=mainPage"/>
+<p>Make sure to have embed=iframe in the query string</p>
 <br/>
 Open OnLoad: <input type='checkbox' id='openOnLoad'/>
 <p><b>IMPORTANT:</b> Open OnLoad is for the initial state.  On this page implementation, once a user has opened or closed the overlay, that preference is saved in local storage and will override this checkbox.</p>
 <br/>
 <ul>
-<li><a onclick="showHelp();" href="#">Generate encoded url and reload</a></li>
+<li><a onclick="showHelp();" href="#">Reload page with above parameters</a></li>
 </ul>
 <!--<ul>
 <li><a onclick="MyFunction()" href="#">Post Aloha</a></li>
