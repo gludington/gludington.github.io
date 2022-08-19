@@ -232,9 +232,8 @@ function MyFunction() {
 	<br/>
 Version: <input id="baseUi" size="100" value="https://ipsoft-amelia-qa-currentstable.ipsoft.com/Amelia/ui/current/chat?embed=iframe&domainCode=maxtest&attrib_urlPath=mainPage"/> (make sure to have embed=iframe)
 <br/>
-Width : <input id="width" value="320"/>
+Open OnLoad: <input type='checkbox' id='openOnLoad'/>
 <br/>
-Height: <input id="height" value="600"/>
 <ul>
 <li><a onclick="showHelp();" href="#">Generate encoded url and reload</a></li>
 </ul>
@@ -294,7 +293,11 @@ function qs(key) {
 }
 
 var iframeSrc = qs('iframeSrc');
+if (iframeSrc) {
+	document.getElementById('baseUi').value = decodeURIComponent('iframeSrc');
+}
 var openOnLoad = !!qs('openOnLoad');
+document.getElementById('openOnLoad').checked = openOnLoad;
 var clientConfig = {
   iframeSrc: iframeSrc,
   openOnLoad: false,
@@ -310,7 +313,7 @@ var clientConfig = {
   banner: {
     title: 'Amelia',
     helper: 'Virtual Assistant',
-    description: 'Hello, I am Amelia. How can I help you today? If this is a medical emergency, please call 911 or report to your local emergency room.'
+    description: 'Hello, I am Amelia.'
   },
   dragAndDropChatOverlay: true
 };
