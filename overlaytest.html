@@ -296,6 +296,8 @@ function qs(key) {
 var iframeSrc = qs('iframeSrc');
 if (iframeSrc) {
 	document.getElementById('baseUi').value = decodeURIComponent(iframeSrc);
+} else {
+	iframeSrc = document.getElementById('baseUi').value;
 }
 var openOnLoad = !!qs('openOnLoad');
 document.getElementById('openOnLoad').checked = openOnLoad;
