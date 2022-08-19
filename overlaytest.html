@@ -212,7 +212,8 @@
 function showHelp() {
 	var url = document.location.protocol + '//' + document.location.host + document.location.pathname;
 	var ameliaFrame = document.getElementById('ameliaFrame');
-	url += '?' + encodeURIComponent(document.getElementById('baseUi').value);
+	url += '?iframeSrc=' + encodeURIComponent(document.getElementById('baseUi').value);
+	url += '&openOnLoad=' + document.getElementById('openOnLoad').checked;
 	window.location.href=url;
 }
 
