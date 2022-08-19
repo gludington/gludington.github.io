@@ -293,8 +293,16 @@ Height: <input id="height" value="600"/>
 </body> </html>
 <script>
 
+function qs(key) {
+    key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
+    var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
+    return match && decodeURIComponent(match[1].replace(/\+/g, " "));
+}
+
+var iframeSrc = qs('iframeSrc');
+var openOnLoad = !!qs('openOnLoad');
 var clientConfig = {
-  iframeSrc: 'https://localhost:9000/chat?embed=iframe&domainCode=other',
+  iframeSrc: iframeSrc,
   openOnLoad: false,
   header: {
     backgroundColor: 'green',
