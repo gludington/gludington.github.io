@@ -210,13 +210,10 @@
 
 <script>
 function showHelp() {
+	var url = document.location.protocol + '//' + document.location.host + document.location.pathname;
 	var ameliaFrame = document.getElementById('ameliaFrame');
-	ameliaFrame.src=document.getElementById('baseUi').value;
-	ameliaFrame.style.height=document.getElementById('height').value + 'px';
-	ameliaFrame.style.width=document.getElementById('width').value + 'px';
-	ameliaFrame.style.visibility="block";
-
-	base = document.getElementById('baseUi').value;
+	url += '?' + encodeURIComponent(document.getElementById('baseUi').value);
+	window.location.href=url;
 }
 
 </script>
@@ -239,7 +236,7 @@ Width : <input id="width" value="320"/>
 <br/>
 Height: <input id="height" value="600"/>
 <ul>
-<li><a onclick="showHelp();" href="#">Open Iframe</a></li>
+<li><a onclick="showHelp();" href="#">Generate encoded url and reload</a></li>
 </ul>
 <ul>
 <li><a onclick="MyFunction()" href="#">Post Aloha</a></li>
@@ -265,7 +262,7 @@ Height: <input id="height" value="600"/>
     </div>
     <div class="header-logo">
        <img class="logo" alt="logo" />
-        <!-- <img class="chat-overlay-close" src="./close.png" alt="toggle chat overlay" /> -->
+		<img class="chat-overlay-close" src="./close.png" alt="toggle chat overlay" />
         <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <line x1="4" y1="4" x2="20" y2="20" stroke="#003592" stroke-width="3"></line>
           <line x1="20" y1="4" x2="4" y2="20" stroke="#003592" stroke-width="3"></line>
@@ -274,7 +271,7 @@ Height: <input id="height" value="600"/>
     <div class="chat-overlay-wrapper">
       <div class="chat-overlay-header-mobile chat-overlay-close">
         <img class="logo" alt="logo" />
-        <!-- <img class="chat-overlay-close" src="/close.png" alt="toggle chat overlay" /> -->
+        <img class="chat-overlay-close" src="/close.png" alt="toggle chat overlay" />
         <svg class="chat-overlay-close" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <line x1="1" y1="1" x2="40" y2="40" stroke="#003592" stroke-width="4"></line>
           <line x1="40" y1="1" x2="1" y2="40" stroke="#003592" stroke-width="4"></line>
