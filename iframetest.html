@@ -16,12 +16,43 @@ function showHelp() {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
+	
 console.log('jquery', $);
 var base;
 function MyFunction() {
  var receiverElemContentWindow = document.getElementById('ameliaFrame').contentWindow;
     receiverElemContentWindow.postMessage({actionType: 'ameliaSay', actionData: 'aloha'}, base);
 };
+
+function receiveMessage(e, data) {
+    /**
+     * Receive message from child frame and update the DOM
+     * @param {Object} data - data used to update the DOM
+     * @returns - no return
+     */
+    // Check to make sure that this message came from the correct domain.
+  
+    var url = e.data.url;
+    //if (e.origin !== 'https://MyAmelia.ipsoft.com')
+      //return;
+	console.error("Recieved data from Amelia", data);
+     if (e.data.action === "checkout" && e.data.additionalData) {
+        window.location.href = "/checkout/?additionalData="+ e.data.additionalData;
+    }
+  }
+   
+  function sendMessage(data) {
+    /**
+     * Use data object and postMessage to URL provided (postMessage to child frame)
+     * @param {Object} data - data to be sent to url provided of child frame
+     * @returns - no return
+     */
+     
+    var receiverElem = document.getElementById('receiver').contentWindow;
+    receiverElem.postMessage(data, "https://MyAmelia.ipsoft.com/Amelia/ui/MyAmeliaUIBundle/?embed=iframe&domainCode=MyAmeliaDomainCode");
+  }
+window.addEventListener('message', receiveMessage);
+
 </script>
 <body><h2>Amelia in an iframe test</h2> 
 <p>We are trying to display the following link in the iframe: 
