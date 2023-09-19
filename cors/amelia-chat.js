@@ -1338,7 +1338,6 @@ var AmeliaChat = (function(config) {
      */
 	chat._initSession = function(onsuccess) {
 		if (_needingInit) {
-			fetch(ngrokHost + '/Amelia/api/init')
             getJson('/Amelia/api/init', chat._sessionHeaders({}), function (xhr) {
                 _needingInit = false;
             }, undefined, function (xhr) {
