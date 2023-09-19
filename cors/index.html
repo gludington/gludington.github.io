@@ -32,9 +32,10 @@ chat.registerPlugin({
             entry(`Conversation ${conversationId} in ${domainCode}`);
             console.info("Conversation Started", conversationId, domainCode);
         });
-        chat.addEventListener('messageReceived', undefined, function (conversation, message) {
-            entry(`Message Received : ${message.msgType}`);
-            console.info("Message Received", message);
+        chat.addEventListener('messageReceived', undefined, function (chat, conversation, message) {
+            var msg = JSON.parse(message.body);
+            entry(`Message Received : ${msg.msgType} text ${msg.messageText}`);
+            console.info("Message Received", msg);
         });
     } 
 });
