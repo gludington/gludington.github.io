@@ -1364,9 +1364,8 @@ var AmeliaChat = (function(config) {
                     if (data.csrfToken) {
                         chat._csrfToken = data.csrfToken;
                     }
-					debugger;
+
 					if ((data.user && data.user.anonymous === false) || (chat._allowAnonymous === true && data.appConfig && data.appConfig.allowAnonymous === true)) {
-						debugger;
                         if (data.user) {
 							if (!chat._wsConnection) {
 								chat._wsConnection = new WebsocketConnection(chat._initialConfig);
