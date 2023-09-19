@@ -34,7 +34,7 @@ chat.registerPlugin({
         });
         chat.addEventListener('messageReceived', undefined, function (chat, conversation, message) {
             var msg = JSON.parse(message.body);
-            entry(`Message Received : ${msg.msgType} text ${msg.messageText}`);
+            entry(`Message Received : ${msg.messageType} text ${msg.messageText}`);
             console.info("Message Received", msg);
         });
     } 
