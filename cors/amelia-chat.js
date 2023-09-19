@@ -7,6 +7,7 @@
  */
 
 const ngrokHost = "https://14b9-70-95-144-82.ngrok-free.app";
+
 var AmeliaChat = (function(config) {
 	var chat = this;
 	config = config || {};
@@ -490,7 +491,7 @@ var AmeliaChat = (function(config) {
 			if (wsConnection.transports !== undefined) {
 				options.transports = wsConnection.transports;
 			}
-			var socket = new SockJS(ngrokHost + 'Amelia/api/sock', /** reserved * */ null, options);
+			var socket = new SockJS(ngrokHost + '/Amelia/api/sock', /** reserved * */ null, options);
 
 			wsConnection.connection = webstomp.over(socket, {heartbeat: {incoming: 20000, outgoing: 20000}, debug: this.debug});
 
