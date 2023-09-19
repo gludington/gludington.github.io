@@ -76,6 +76,7 @@ var AmeliaChat = (function(config) {
 			xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
 		}
 		xhr.withCredentials = true;
+		console.info("GETXHR", xhr);
 		return xhr;
 	};
 
@@ -147,7 +148,7 @@ var AmeliaChat = (function(config) {
 		
         if (typeof afteropen === 'function') {
             afteropen.call(chat, xhr);
-        }
+		}
 		if (headers !== undefined) {
 			for (var key in headers) {
 				if (headers.hasOwnProperty(key)) {
@@ -155,8 +156,8 @@ var AmeliaChat = (function(config) {
 				}
 			}
 		}
-		xhr.setRequestHeader('Accept', 'application/json,text/xml,text/html,text/plain');
-		xhr.setRequestHeader("X-PINGOTHER", "pingpong");
+		//xhr.setRequestHeader('Accept', 'application/json,text/xml,text/html,text/plain');
+		//xhr.setRequestHeader("X-PINGOTHER", "pingpong");
 		var failure = failure || function(xhr) {
 				//console.error('Request failed.  Returned status of ' + xhr.status);
 				//console.error(xhr);
