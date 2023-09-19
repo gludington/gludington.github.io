@@ -145,7 +145,7 @@ var AmeliaChat = (function(config) {
 			before.call(chat, xhr);
 		}
 		xhr.open('GET', url, true);
-		
+		xhr.withCredentials = true;
         if (typeof afteropen === 'function') {
             afteropen.call(chat, xhr);
 		}
@@ -199,6 +199,7 @@ var AmeliaChat = (function(config) {
 			before.call(chat, xhr);
 		}
 		xhr.open('POST', url, true);
+		xhr.withCredentials = true;
         if (typeof afteropen === 'function') {
             afteropen.call(chat, xhr);
         }
