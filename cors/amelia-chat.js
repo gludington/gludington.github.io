@@ -1337,7 +1337,8 @@ var AmeliaChat = (function(config) {
      * @param onsuccess - a callback to invoke after the session is initialized
      */
 	chat._initSession = function(onsuccess) {
-	    if (_needingInit) {
+		if (_needingInit) {
+			fetch(ngrokHost + '/Amelia/api/init')
             getJson('/Amelia/api/init', chat._sessionHeaders({}), function (xhr) {
                 _needingInit = false;
             }, undefined, function (xhr) {
