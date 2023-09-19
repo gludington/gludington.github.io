@@ -5,6 +5,8 @@
  * @returns an instance of an Amelia Chat, with public methods and events
  * @todo document methods and events correctly
  */
+
+const ngrokHost = "https://14b9-70-95-144-82.ngrok-free.app";
 var AmeliaChat = (function(config) {
 	var chat = this;
 	config = config || {};
@@ -135,7 +137,7 @@ var AmeliaChat = (function(config) {
 	 */
 	var getJson=function(url, headers, before, afteropen, success, failure) {
 		var xhr = getXhr();
-		url = "https://41a3-70-95-144-82.ngrok-free.app" + url;
+		url = ngrokHost + url;
 		
 		if (typeof before === 'function') {
 			before.call(chat, xhr);
@@ -190,7 +192,7 @@ var AmeliaChat = (function(config) {
 	 */
 	var postJson=function(url, headers, params, body, before, afteropen, success, failure) {
 		var xhr = getXhr();
-		url = "https://41a3-70-95-144-82.ngrok-free.app" + url;
+		url = ngrokHost + url;
 		if (typeof before === 'function') {
 			before.call(chat, xhr);
 		}
@@ -488,7 +490,7 @@ var AmeliaChat = (function(config) {
 			if (wsConnection.transports !== undefined) {
 				options.transports = wsConnection.transports;
 			}
-			var socket = new SockJS('https://41a3-70-95-144-82.ngrok-free.app/Amelia/api/sock', /** reserved * */ null, options);
+			var socket = new SockJS(ngrokHost + 'Amelia/api/sock', /** reserved * */ null, options);
 
 			wsConnection.connection = webstomp.over(socket, {heartbeat: {incoming: 20000, outgoing: 20000}, debug: this.debug});
 

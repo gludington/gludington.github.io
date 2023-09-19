@@ -3,16 +3,41 @@
         <title>Test</title>
         <script src="amelia-chat-with-deps.min.js"></script>
         <script src="amelia-chat.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     </head>
     <body>
         <h2>Testing</h2>
+        <ul id="messageLog">
+            
+        </ul>
     </body>
     <script>
-console.info("core", $);
-var chat = new AmeliaChat({ autoConnect: true, domainCode: "global"});
-console.info(chat);
+
+var chat = new AmeliaChat({
+    autoConnect: true,
+    domainCode: "global"
+});
+const messageLog = document.getElementById("messageLog");
+var entry = (message) => {
+    var li = document.createElement('li');
+    li.innerHTML = message;
+    messageLog.appendChild(li);
+}
+
+chat.registerPlugin({
+    registerChatPlugin: (chat) => {
+
+        console.info(messageLog);
+        chat.addEventListener('conversationStart', undefined, function (pub, sessionId, conversationId, domainCode) {
+            entry(`Conversation ${conversationId} in ${domainCode}`);
+            console.info("Conversation Started", conversationId, domainCode);
+        });
+        chat.addEventListener('messageReceived', undefined, function (conversation, message) {
+            entry(`Message Received : ${message.msgType}`);
+            console.info("Message Received", message);
+        });
+    } 
+});
 
     </script>
 </html>
