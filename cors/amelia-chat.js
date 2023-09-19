@@ -1866,8 +1866,6 @@ var AmeliaChat = (function(config) {
 
     chat._sessionHeaders = function(headers) {
 		var result = headers || {};
-		result["Origin"] = "https://gludington.github.io"
-		result["Referer"] = "https://gludington.github.io/"
         if (chat._csrfToken !== null && chat._csrfToken !== undefined) {
 			result["X-CSRF-TOKEN"] = chat._csrfToken;
 		}
