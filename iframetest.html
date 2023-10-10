@@ -39,7 +39,7 @@ function receiveMessage(e, data) {
     var url = e.data.url;
     //if (e.origin !== 'https://MyAmelia.ipsoft.com')
       //return;
-	  console.error("Recieved data from Amelia", data);
+	  console.info("Recieved data from Amelia", data);
      if (e.data.action === "checkout" && e.data.additionalData) {
         window.location.href = "/checkout/?additionalData="+ e.data.additionalData;
     }
